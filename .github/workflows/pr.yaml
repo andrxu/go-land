@@ -28,7 +28,7 @@ jobs:
         run: make build
       - name: Set Result
         id: set-result
-        run: echo "result=success" >> $GITHUB_ENV
+        run: echo "result=success" >> $GITHUB_OUTPUT
 
   pr-ready:
     runs-on: ubuntu-latest
