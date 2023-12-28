@@ -10,6 +10,8 @@ on:
 jobs:
   build-and-validate:
     runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.set-result.outputs.result }}
     permissions:
       security-events: write
       actions: read
@@ -24,6 +26,9 @@ jobs:
           go-version: 1.21.4
       - name: Run Makefile
         run: make build
+      - name: Set Result
+        id: set-result
+        run: echo "result=success" >> $GITHUB_ENV
 
   pr-ready:
     runs-on: ubuntu-latest
@@ -32,7 +37,7 @@ jobs:
     steps:
       - name: Emit the final result of workflow for required status check
         run: |
-          if [[ '${{ needs.build-and-validate.result }}' != 'success' ]]; then
+          if [[ '${{ needs.build-and-validate.outputs.result }}' != 'success' ]]; then
             echo '::error::build-and-validate job had issues'
             exit 1
           fi
