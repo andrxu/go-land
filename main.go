@@ -4,17 +4,19 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/andrxu/go-land/pkg/config"
+	"go-land/pkg/config"
+	lru "go-land/pkg/lrudemo"
 )
 
 func main() {
 	fmt.Println("Hello, Go's play land!")
 
 	demoStructAlias()
+	demoLruCache()
 }
 
 func demoStructAlias() {
-	fmt.Println("* Demonstrates using type alias to handle special fields during JSON marshaling and unmarshaling.")
+	fmt.Println("\n* Demonstrates using type alias to handle special fields during JSON marshaling and unmarshaling.")
 	data, err := os.ReadFile("./pkg/config/kafka.json")
 
 	if err != nil {
@@ -30,4 +32,9 @@ func demoStructAlias() {
 
 	fmt.Printf("Id: %s\n", kafkaConfig.Id)
 	fmt.Printf("Interval: %s\n", kafkaConfig.Interval)
+}
+
+func demoLruCache() {
+	fmt.Println("\n* Demonstrates LRU cache.")
+	lru.Main()
 }

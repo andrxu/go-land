@@ -4,20 +4,23 @@ CONTAINER_IMAGE ?= andrxu/$(MICROSERVICE):latest
 
 .DEFAULT_GOAL := build
 
-GO=GOPRIVATE=github.com/andrxu/* go
+GO=go
 
 build:
 	$(GO) build -v -o $(MICROSERVICE)
 	$(GO) test -v -c -tags=functional -o $(MICROSERVICE)-functional.test
 .PHONY: build
 
-run:
+run: build
 	$(GO) run main.go
 
 lint:
 	$(GO) vet $(SOURCE)
 	test -z $(shell go fmt $(SOURCE))
 .PHONY: lint
+
+test: run
+.PHONY: test
 
 unit-test:
 	$(GO) test -coverprofile=coverage.out $(SOURCE) -count=1
